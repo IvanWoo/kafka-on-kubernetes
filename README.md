@@ -6,6 +6,7 @@
   - [kafka](#kafka)
     - [install Strimzi](#install-strimzi)
     - [deploy the kafka cluster](#deploy-the-kafka-cluster)
+  - [operations](#operations)
     - [send some messages](#send-some-messages)
     - [receive some messages](#receive-some-messages)
 - [cleanup](#cleanup)
@@ -46,6 +47,8 @@ wait the cluster to be ready
 ```sh
 kubectl wait kafka/my-kafka-cluster --for=condition=Ready --timeout=300s -n kafka
 ```
+
+### operations
 
 #### send some messages
 
