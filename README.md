@@ -6,6 +6,7 @@
   - [kafka](#kafka)
     - [install Strimzi](#install-strimzi)
     - [deploy the kafka cluster](#deploy-the-kafka-cluster)
+    - [install Kafka-UI](#install-kafka-ui)
   - [operations](#operations)
     - [topics](#topics)
       - [create a topic](#create-a-topic)
@@ -55,6 +56,22 @@ wait the cluster to be ready
 kubectl wait kafka/my-kafka-cluster --for=condition=Ready --timeout=300s -n kafka
 ```
 
+#### install [Kafka-UI](https://github.com/provectus/kafka-ui)
+
+```sh
+helm repo add kafka-ui https://provectus.github.io/kafka-ui
+```
+
+```sh
+helm upgrade --install my-kafka-ui kafka-ui/kafka-ui --namespace kafka -f kafka-ui/values.yaml
+```
+
+```sh
+kubectl port-forward svc/my-kafka-ui -n kafka 8080:80
+```
+
+visit the [Kafka-UI](http://localhost:8080)
+
 ### operations
 
 #### topics
@@ -90,13 +107,13 @@ kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30
 ##### send some messages
 
 ```sh
-kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-topic --property parse.key=true --property key.separator=:
+kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-first-topic --property parse.key=true --property key.separator=:
 ```
 
 ##### receive some messages
 
 ```sh
-kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true
+kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-first-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true
 ```
 
 #### consumer groups
@@ -138,5 +155,6 @@ tl;dr: `./scripts/down.sh`
 ```sh
 kubectl delete -f kafka/ -n kafka
 kubectl delete -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
+helm uninstall my-kafka-ui -n kafka
 kubectl delete namespace kafka
 ```

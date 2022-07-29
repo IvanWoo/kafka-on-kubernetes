@@ -7,6 +7,7 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="${BASE_DIR}/.."
 (
 cd ${REPO_DIR}
+helm uninstall my-kafka-ui -n kafka
 kubectl delete -f kafka/ -n kafka
 kubectl delete -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
 kubectl delete namespace kafka
