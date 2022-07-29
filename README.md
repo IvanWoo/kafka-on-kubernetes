@@ -7,17 +7,21 @@
     - [install Strimzi](#install-strimzi)
     - [deploy the kafka cluster](#deploy-the-kafka-cluster)
     - [install Kafka-UI](#install-kafka-ui)
-  - [operations](#operations)
-    - [topics](#topics)
-      - [create a topic](#create-a-topic)
-      - [list topics](#list-topics)
-      - [describe a topic](#describe-a-topic)
-      - [delete a topic](#delete-a-topic)
-    - [messages](#messages)
-      - [send some messages](#send-some-messages)
-      - [receive some messages](#receive-some-messages)
-    - [consumer groups](#consumer-groups)
+- [operations](#operations)
+  - [topics](#topics)
+    - [create a topic](#create-a-topic)
+    - [list topics](#list-topics)
+    - [describe a topic](#describe-a-topic)
+    - [delete a topic](#delete-a-topic)
+  - [messages](#messages)
+    - [send some messages](#send-some-messages)
+    - [receive some messages](#receive-some-messages)
+  - [consumer groups](#consumer-groups)
+- [kafka-programming](#kafka-programming)
+  - [java](#java)
+    - [create the topic](#create-the-topic)
 - [cleanup](#cleanup)
+- [references](#references)
 
 ## prerequisites
 
@@ -72,11 +76,11 @@ kubectl port-forward svc/my-kafka-ui -n kafka 8080:80
 
 visit the [Kafka-UI](http://localhost:8080)
 
-### operations
+## operations
 
-#### topics
+### topics
 
-##### create a topic
+#### create a topic
 
 **attention**: the replication-factor <= number of kafka brokers
 
@@ -84,39 +88,39 @@ visit the [Kafka-UI](http://localhost:8080)
 kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --create --topic my-first-topic --partitions 1 --replication-factor 1
 ```
 
-##### list topics
+#### list topics
 
 ```sh
 kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --list
 ```
 
-##### describe a topic
+#### describe a topic
 
 ```sh
 kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --describe --topic my-first-topic
 ```
 
-##### delete a topic
+#### delete a topic
 
 ```sh
 kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --delete --topic my-first-topic
 ```
 
-#### messages
+### messages
 
-##### send some messages
+#### send some messages
 
 ```sh
 kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-first-topic --property parse.key=true --property key.separator=:
 ```
 
-##### receive some messages
+#### receive some messages
 
 ```sh
 kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-first-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true
 ```
 
-#### consumer groups
+### consumer groups
 
 create the topic with multiple partitions
 
@@ -148,6 +152,24 @@ list all consumer groups
 kubectl -n kafka run kafka-consumer-group-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-consumer-groups.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --list
 ```
 
+delete a consumer group
+
+```sh
+kubectl -n kafka run kafka-consumer-group-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-consumer-groups.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --delete --group my-first-consumer-group
+```
+
+## kafka-programming
+
+### java
+
+#### create the topic
+
+```sh
+kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --create --topic demo_java --partitions 3 --replication-factor 1
+```
+
+FIXME: port forward the kafka bootstrap server will not work
+
 ## cleanup
 
 tl;dr: `./scripts/down.sh`
@@ -158,3 +180,7 @@ kubectl delete -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
 helm uninstall my-kafka-ui -n kafka
 kubectl delete namespace kafka
 ```
+
+## references
+
+- [Develop Apache Kafka applications with Strimzi and Minikube](https://strimzi.io/blog/2020/04/15/develop-apache-kafka-applications-with-strimzi-and-minikube/)
