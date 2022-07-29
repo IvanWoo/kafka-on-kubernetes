@@ -15,6 +15,7 @@
     - [messages](#messages)
       - [send some messages](#send-some-messages)
       - [receive some messages](#receive-some-messages)
+    - [consumer groups](#consumer-groups)
 - [cleanup](#cleanup)
 
 ## prerequisites
@@ -36,7 +37,7 @@ kubectl create namespace kafka --dry-run=client -o yaml | kubectl apply -f -
 
 ### kafka
 
-#### install Strimzi
+#### install [Strimzi](https://strimzi.io)
 
 ```sh
 kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
@@ -96,6 +97,38 @@ kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.30.0-kaf
 
 ```sh
 kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true
+```
+
+#### consumer groups
+
+create the topic with multiple partitions
+
+```sh
+kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --create --topic my-first-consumer-group-topic --partitions 3 --replication-factor 1
+```
+
+create the consumer group
+
+```sh
+kubectl -n kafka run kafka-consumer-group-0 -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-first-consumer-group-topic --group my-first-consumer-group --from-beginning
+```
+
+```sh
+kubectl -n kafka run kafka-consumer-group-1 -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-first-consumer-group-topic --group my-first-consumer-group --from-beginning
+```
+
+send some messages
+
+```sh
+kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-first-consumer-group-topic
+```
+
+**attention**: same group will share the message, but different group will receive same message when attaching to the same topic
+
+list all consumer groups
+
+```sh
+kubectl -n kafka run kafka-consumer-group-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-consumer-groups.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --list
 ```
 
 ## cleanup
