@@ -7,8 +7,14 @@
     - [install Strimzi](#install-strimzi)
     - [deploy the kafka cluster](#deploy-the-kafka-cluster)
   - [operations](#operations)
-    - [send some messages](#send-some-messages)
-    - [receive some messages](#receive-some-messages)
+    - [topics](#topics)
+      - [create a topic](#create-a-topic)
+      - [list topics](#list-topics)
+      - [describe a topic](#describe-a-topic)
+      - [delete a topic](#delete-a-topic)
+    - [messages](#messages)
+      - [send some messages](#send-some-messages)
+      - [receive some messages](#receive-some-messages)
 - [cleanup](#cleanup)
 
 ## prerequisites
@@ -50,16 +56,46 @@ kubectl wait kafka/my-kafka-cluster --for=condition=Ready --timeout=300s -n kafk
 
 ### operations
 
-#### send some messages
+#### topics
+
+##### create a topic
+
+**attention**: the replication-factor <= number of kafka brokers
 
 ```sh
-kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-topic
+kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --create --topic my-first-topic --partitions 1 --replication-factor 1
 ```
 
-#### receive some messages
+##### list topics
 
 ```sh
-kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning
+kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --list
+```
+
+##### describe a topic
+
+```sh
+kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --describe --topic my-first-topic
+```
+
+##### delete a topic
+
+```sh
+kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --delete --topic my-first-topic
+```
+
+#### messages
+
+##### send some messages
+
+```sh
+kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-topic --property parse.key=true --property key.separator=:
+```
+
+##### receive some messages
+
+```sh
+kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true
 ```
 
 ## cleanup
