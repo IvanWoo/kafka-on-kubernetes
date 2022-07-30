@@ -11,6 +11,9 @@ spec:
         port: 9092
         type: internal
         tls: false
+        # https://github.com/telepresenceio/telepresence/issues/1722
+        configuration:
+          useServiceDnsDomain: true
       - name: tls
         port: 9093
         type: internal

@@ -18,7 +18,7 @@ public class ProducerDemo {
 
         // create producer properties
         Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094");
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "http://my-kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092");
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "PLAINTEXT");
@@ -28,7 +28,7 @@ public class ProducerDemo {
 
         // create a producer record
         ProducerRecord<String, String> producerRecord;
-        producerRecord = new ProducerRecord<>("demo_java", "hello world");
+        producerRecord = new ProducerRecord<>("demo.java", "hello world");
 
         // send data - async
         producer.send(producerRecord);

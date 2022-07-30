@@ -18,8 +18,8 @@
     - [receive some messages](#receive-some-messages)
   - [consumer groups](#consumer-groups)
 - [kafka-programming](#kafka-programming)
+  - [create topics](#create-topics)
   - [java](#java)
-    - [create the topic](#create-the-topic)
 - [cleanup](#cleanup)
 - [references](#references)
 
@@ -160,15 +160,15 @@ kubectl -n kafka run kafka-consumer-group-operator -ti --image=quay.io/strimzi/k
 
 ## kafka-programming
 
-### java
+**attention**: follow [local_dev doc](local_dev.md) to setup the prerequisites
 
-#### create the topic
+### create topics
 
 ```sh
-kubectl -n kafka run kafka-topic-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --create --topic demo_java --partitions 3 --replication-factor 1
+kubectl apply -f kafka/topics.yaml -n kafka
 ```
 
-FIXME: port forward the kafka bootstrap server will not work
+### java
 
 ## cleanup
 
@@ -184,3 +184,4 @@ kubectl delete namespace kafka
 ## references
 
 - [Develop Apache Kafka applications with Strimzi and Minikube](https://strimzi.io/blog/2020/04/15/develop-apache-kafka-applications-with-strimzi-and-minikube/)
+- [Easily Debug Java Microservices Running on Kubernetes with IntelliJ IDEA](https://blog.jetbrains.com/idea/2021/05/easily-debug-java-microservices-running-on-kubernetes-with-intellij-idea/)
