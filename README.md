@@ -170,6 +170,8 @@ kubectl apply -f kafka/topics.yaml -n kafka
 
 ### java
 
+- `StickyPartitioner` to improve the performance of batch producing at [ProducerDemoWithCallback.java](./kafka-programming/java-kafaka-beginners-cource/kafka-basics/src/main/java/org/example/kafka/ProducerDemoWithCallback.java)
+
 ## cleanup
 
 tl;dr: `./scripts/down.sh`
