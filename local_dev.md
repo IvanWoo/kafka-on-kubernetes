@@ -47,7 +47,7 @@ Content-Length: 165
 ### cleanup
 
 ```sh
-telepresence disconnect
+telepresence quit -u
 telepresence uninstall --everything
 ```
 
