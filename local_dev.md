@@ -17,6 +17,40 @@ telepresence will enable to refer to the remote Service directly via its interna
 telepresence connect
 ```
 
+### verify
+
+```sh
+curl -ik https://kubernetes.default
+```
+
+```sh
+HTTP/1.1 401 Unauthorized
+Audit-Id: e9e47951-afe5-4033-ae72-89db82532d3d
+Cache-Control: no-cache, private
+Content-Type: application/json
+Date: Sat, 30 Jul 2022 15:16:24 GMT
+Content-Length: 165
+
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {
+
+  },
+  "status": "Failure",
+  "message": "Unauthorized",
+  "reason": "Unauthorized",
+  "code": 401
+}
+```
+
+### cleanup
+
+```sh
+telepresence disconnect
+telepresence uninstall --everything
+```
+
 ## java
 
 ### prerequisites
