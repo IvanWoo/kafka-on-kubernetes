@@ -171,6 +171,7 @@ kubectl apply -f kafka/topics.yaml -n kafka
 ### java
 
 - `StickyPartitioner` to improve the performance of batch producing at [ProducerDemoWithCallback.java](./kafka-programming/java-kafaka-beginners-cource/kafka-basics/src/main/java/org/example/kafka/ProducerDemoWithCallback.java)
+- messages with the same key will be sent to the same partition at [ProducerDemoKey.java](./kafka-programming/java-kafaka-beginners-cource/kafka-basics/src/main/java/org/example/kafka/ProducerDemoKey.java)
 
 ## cleanup
 
