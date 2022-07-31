@@ -176,6 +176,8 @@ kubectl apply -f kafka/topics.yaml -n kafka
   - moving partitions between consumers is called rebalance
   - eager rebalance: all consumers stop and rejoin
   - cooperative rebalance (incremental rebalance): reassign a small subset of the partitions
+- auto offset commit
+  - `.commitAsync()` called periodically between `.poll()` calls
 
 ## cleanup
 
