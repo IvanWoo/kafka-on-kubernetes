@@ -172,6 +172,10 @@ kubectl apply -f kafka/topics.yaml -n kafka
 
 - `StickyPartitioner` to improve the performance of batch producing at [ProducerDemoWithCallback.java](./kafka-programming/java-kafaka-beginners-cource/kafka-basics/src/main/java/org/example/kafka/ProducerDemoWithCallback.java)
 - messages with the same key will be sent to the same partition at [ProducerDemoKey.java](./kafka-programming/java-kafaka-beginners-cource/kafka-basics/src/main/java/org/example/kafka/ProducerDemoKey.java)
+- consumer groups and partition rebalance
+  - moving partitions between consumers is called rebalance
+  - eager rebalance: all consumers stop and rejoin
+  - cooperative rebalance (incremental rebalance): reassign a small subset of the partitions
 
 ## cleanup
 
