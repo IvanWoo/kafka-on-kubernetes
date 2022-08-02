@@ -9,4 +9,14 @@ spec:
   partitions: 3
   replicas: 1
 ---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: wikimedia.recentchange
+  labels:
+    strimzi.io/cluster: "my-kafka-cluster"
+spec:
+  partitions: 3
+  replicas: 1
+---
 
