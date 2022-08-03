@@ -201,6 +201,9 @@ kubectl apply -f kafka/topics.yaml -n kafka
     - always use compression at the producer level
   - message compression at the broker/topic level
     - `compression.type=producer`
+- message batching
+  - `linger.ms` is the time in milliseconds to wait before sending a batch of messages
+  - `batch.size`
 
 ## cleanup
 
