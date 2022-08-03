@@ -178,6 +178,15 @@ kubectl apply -f kafka/topics.yaml -n kafka
   - cooperative rebalance (incremental rebalance): reassign a small subset of the partitions
 - auto offset commit
   - `.commitAsync()` called periodically between `.poll()` calls
+- kafka topic availability
+  - `acks=all(-1)` and `min.insync.replicas=2` is the most popular option for data durability and availability and allows you to withstand at most the loss of **one** kafka broker
+- idempotent producer
+  - won't introduce duplicates on network error
+- kafka `v3.0+` producer safe by default
+  - acks=-1
+  - enable.idempotence=true
+  - max.in.flight.requests.per.connection=5
+  - retries=2147483647
 
 ## cleanup
 
