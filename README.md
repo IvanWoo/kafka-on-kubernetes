@@ -187,6 +187,20 @@ kubectl apply -f kafka/topics.yaml -n kafka
   - enable.idempotence=true
   - max.in.flight.requests.per.connection=5
   - retries=2147483647
+- compression
+  - message compression at the producer level
+    - [Cloudflare benchmarks](https://blog.cloudflare.com/squeezing-the-firehose/)
+    - pros
+      - smaller request size
+      - low latency
+      - better throughput
+      - better disk utilization in Kafka
+    - cons(minor)
+      - producers must commit some CPU cycles to compression
+      - consumers must commit some CPU cycles to decompression
+    - always use compression at the producer level
+  - message compression at the broker/topic level
+    - `compression.type=producer`
 
 ## cleanup
 
