@@ -8,7 +8,10 @@ REPO_DIR="${BASE_DIR}/.."
 (
 cd ${REPO_DIR}
 helm uninstall my-kafka-ui -n kafka
+helm uninstall my-opensearch -n opensearch
+helm uninstall my-opensearch-dashboards -n opensearch
 kubectl delete -f kafka/ -n kafka
 kubectl delete -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
 kubectl delete namespace kafka
+kubectl delete namespace opensearch
 )

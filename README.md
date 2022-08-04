@@ -7,6 +7,7 @@
     - [install Strimzi](#install-strimzi)
     - [deploy the kafka cluster](#deploy-the-kafka-cluster)
     - [install Kafka-UI](#install-kafka-ui)
+  - [opensearch](#opensearch)
 - [operations](#operations)
   - [topics](#topics)
     - [create a topic](#create-a-topic)
@@ -38,6 +39,7 @@ tl;dr: `./scripts/up.sh`
 
 ```sh
 kubectl create namespace kafka --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace opensearch --dry-run=client -o yaml | kubectl apply -f -
 ```
 
 ### kafka
@@ -75,6 +77,35 @@ kubectl port-forward svc/my-kafka-ui -n kafka 8080:80
 ```
 
 visit the [Kafka-UI](http://localhost:8080)
+
+### opensearch
+
+follow the [OpenSearch](https://opensearch.org/docs/latest/opensearch/install/helm/) guide to deploy the opensearch service
+
+```sh
+helm repo add opensearch https://opensearch-project.github.io/helm-charts/
+helm repo update
+```
+
+```sh
+helm upgrade --install my-opensearch opensearch/opensearch --namespace opensearch -f opensearch/values.yaml
+helm upgrade --install my-opensearch-dashboards opensearch/opensearch-dashboards --namespace opensearch -f opensearch-dashboards/values.yaml
+```
+
+port-forward the opensearch dashboard service
+
+```sh
+kubectl port-forward svc/my-opensearch-dashboards -n opensearch 5601
+```
+
+and visit the [opensearch dashboard](http://localhost:5601) with the following credentials:
+
+```sh
+username: admin
+password: admin
+```
+
+verify the opensearch service by testing [these operations](https://opensearch.org/docs/latest/#docker-quickstart) on the [opensearch dashboard](http://localhost:5601)
 
 ## operations
 
@@ -213,7 +244,10 @@ tl;dr: `./scripts/down.sh`
 kubectl delete -f kafka/ -n kafka
 kubectl delete -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
 helm uninstall my-kafka-ui -n kafka
+helm uninstall my-opensearch -n opensearch
+helm uninstall my-opensearch-dashboards -n opensearch
 kubectl delete namespace kafka
+kubectl delete namespace opensearch
 ```
 
 ## references

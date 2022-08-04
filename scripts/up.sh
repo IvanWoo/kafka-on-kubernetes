@@ -8,9 +8,14 @@ REPO_DIR="${BASE_DIR}/.."
 (
 cd ${REPO_DIR}
 kubectl create namespace kafka --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace opensearch --dry-run=client -o yaml | kubectl apply -f -
 kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
 kubectl apply -f kafka/values.yaml -n kafka
 kubectl apply -f kafka/topics.yaml -n kafka
 helm repo add kafka-ui https://provectus.github.io/kafka-ui
+helm repo add opensearch https://opensearch-project.github.io/helm-charts/
+helm repo update
 helm upgrade --install my-kafka-ui kafka-ui/kafka-ui --namespace kafka -f kafka-ui/values.yaml
+helm upgrade --install my-opensearch opensearch/opensearch --namespace opensearch -f opensearch/values.yaml
+helm upgrade --install my-opensearch-dashboards opensearch/opensearch-dashboards --namespace opensearch -f opensearch-dashboards/values.yaml
 )
