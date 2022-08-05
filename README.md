@@ -22,7 +22,6 @@
   - [create topics](#create-topics)
   - [java](#java)
 - [cleanup](#cleanup)
-- [references](#references)
 
 ## prerequisites
 
@@ -249,8 +248,3 @@ helm uninstall my-opensearch-dashboards -n opensearch
 kubectl delete namespace kafka
 kubectl delete namespace opensearch
 ```
-
-## references
-
-- [Develop Apache Kafka applications with Strimzi and Minikube](https://strimzi.io/blog/2020/04/15/develop-apache-kafka-applications-with-strimzi-and-minikube/)
-- [Easily Debug Java Microservices Running on Kubernetes with IntelliJ IDEA](https://blog.jetbrains.com/idea/2021/05/easily-debug-java-microservices-running-on-kubernetes-with-intellij-idea/)

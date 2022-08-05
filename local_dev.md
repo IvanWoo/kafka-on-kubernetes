@@ -1,14 +1,34 @@
-# local-dev
+# local-dev <!-- omit in toc -->
+
+- [networking](#networking)
+  - [kubefwd](#kubefwd)
+  - [Telepresence](#telepresence)
+    - [verify](#verify)
+  - [cleanup](#cleanup)
+- [java](#java)
+  - [prerequisites](#prerequisites)
+- [references](#references)
 
 ## networking
 
-### prerequisites
-
-- [Telepresence](https://www.telepresence.io)
+### [kubefwd](https://github.com/txn2/kubefwd)
 
 ```sh
-sudo curl -fL https://app.getambassador.io/download/tel2/darwin/amd64/latest/telepresence -o /usr/local/bin/telepresence
-sudo chmod +x /usr/local/bin/telepresence
+brew install txn2/tap/kubefwd
+```
+
+forwarding all namespaces to the localhost
+
+```sh
+sudo kubefwd svc --all-namespaces
+```
+
+### [Telepresence](https://www.telepresence.io)
+
+FIXME: for unknown reasons, telepresence does not work after 5 days of use...
+
+```sh
+brew install datawire/blackbird/telepresence-arm64
 ```
 
 telepresence will enable to refer to the remote Service directly via its internal cluster name as if your development machine is inside the cluster
@@ -17,7 +37,7 @@ telepresence will enable to refer to the remote Service directly via its interna
 telepresence connect
 ```
 
-### verify
+#### verify
 
 ```sh
 curl -ik https://kubernetes.default
@@ -62,3 +82,9 @@ telepresence uninstall --everything
 brew install --cask intellij-idea-ce
 brew install --cask corretto
 ```
+
+## references
+
+- [Develop Apache Kafka applications with Strimzi and Minikube](https://strimzi.io/blog/2020/04/15/develop-apache-kafka-applications-with-strimzi-and-minikube/)
+- [Easily Debug Java Microservices Running on Kubernetes with IntelliJ IDEA](https://blog.jetbrains.com/idea/2021/05/easily-debug-java-microservices-running-on-kubernetes-with-intellij-idea/)
+- [Using Telepresence 2 for Kubernetes debugging and local development](https://codefresh.io/blog/telepresence-2-local-development/)
