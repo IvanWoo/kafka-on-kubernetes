@@ -1,0 +1,6 @@
+opensearchHosts: "http://opensearch-cluster-master:9200"
+
+# https://github.com/opensearch-project/opensearch-build/blob/main/docker/release/README.md#disable-security-plugin-security-dashboards-plugin-security-demo-configurations-and-related-configurations
+extraEnvs:
+  - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
+    value: "true"
