@@ -23,6 +23,9 @@
   - [java](#java)
   - [kafka connect](#kafka-connect)
   - [kafka streams](#kafka-streams)
+  - [best practices](#best-practices)
+    - [partition count and replication factor](#partition-count-and-replication-factor)
+    - [Kafka Topic Naming Conventions](#kafka-topic-naming-conventions)
 - [cleanup](#cleanup)
 
 ## prerequisites
@@ -262,6 +265,32 @@ Data processing and transformation library **within** Kafka.
 - Java API
 - exactly-once capabilities
 - one record at a time (no batching)
+
+### best practices
+
+#### partition count and replication factor
+
+- partition
+  - small cluster (< 6 brokers): 3 x brokers
+  - big cluster (> 12 brokers): 2 x brokers
+  - more partition means more elections to perform for Zookeeper
+- replication
+  - at least 2, usually 3, maximum 4
+  - higher replications means
+    - better durability
+    - higher availability
+    - but more latency
+    - but more disk spaces
+- cluster
+  - with Zookeeper
+    - max 200,000 partitions - Zookeeper scaling limit
+      - 4,000 partitions per broker
+  - with Kraft
+    - potential for millions of partitions
+
+#### [Kafka Topic Naming Conventions](https://cnr.sh/essays/how-paint-bike-shed-kafka-topic-naming-conventions)
+
+`<message type>.<dataset name>.<data name>.<data format>`
 
 ## cleanup
 
