@@ -21,6 +21,8 @@
 - [kafka-programming](#kafka-programming)
   - [create topics](#create-topics)
   - [java](#java)
+  - [kafka connect](#kafka-connect)
+  - [kafka streams](#kafka-streams)
 - [cleanup](#cleanup)
 
 ## prerequisites
@@ -244,6 +246,22 @@ kubectl apply -f kafka/topics.yaml -n kafka
   - at most once: offsets are committed as soon as the message is received. If the processing goes wrong, the message will be lost(it won't be read again)
   - at least once (preferred): offsets are committed after the message is processed. If the processing goes wrong, the message will be read again. This can result in duplicate processing of messages. MAke sure your processing is **idempotent**.
   - exactly once: can be achieved for Kafka => Kafka workflows using the Transactional API (easy with Kafka Streams API). For Kafka => Sink workflows, use an idempotent consumer.
+
+### kafka connect
+
+Kafka Connect makes it easy to stream from numerous sources into Kafka and from Kafka into numerous sources, with [hundreds of available connectors](https://www.confluent.io/hub/).
+
+- configurable data pipelines
+- interactive between external systems with kafka
+- supported by [the strimzi operator](https://strimzi.io/docs/operators/latest/configuring.html#assembly-kafka-connect-str)
+
+### kafka streams
+
+Data processing and transformation library **within** Kafka.
+
+- Java API
+- exactly-once capabilities
+- one record at a time (no batching)
 
 ## cleanup
 
