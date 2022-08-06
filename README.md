@@ -234,6 +234,10 @@ kubectl apply -f kafka/topics.yaml -n kafka
 - message batching
   - `linger.ms` is the time in milliseconds to wait before sending a batch of messages
   - `batch.size`
+- delivery semantics
+  - at most once: offsets are committed as soon as the message is received. If the processing goes wrong, the message will be lost(it won't be read again)
+  - at least once (preferred): offsets are committed after the message is processed. If the processing goes wrong, the message will be read again. This can result in duplicate processing of messages. MAke sure your processing is **idempotent**.
+  - exactly once: can be achieved for Kafka => Kafka workflows using the Transactional API (easy with Kafka Streams API). For Kafka => Sink workflows, use an idempotent consumer.
 
 ## cleanup
 
