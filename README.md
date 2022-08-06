@@ -188,6 +188,12 @@ delete a consumer group
 kubectl -n kafka run kafka-consumer-group-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-consumer-groups.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --delete --group my-first-consumer-group
 ```
 
+reset offset of a consumer group to replay the topic
+
+```sh
+kubectl -n kafka run kafka-consumer-group-operator -ti --image=quay.io/strimzi/kafka:0.30.0-kafka-3.2.0 --rm=true --restart=Never -- bin/kafka-consumer-groups.sh --bootstrap-server my-kafka-cluster-kafka-bootstrap:9092 --reset-offsets --to-earliest --group consumer-opensearch-demo --all-topics --execute
+```
+
 ## kafka-programming
 
 **attention**: follow [local_dev doc](local_dev.md) to setup the prerequisites
