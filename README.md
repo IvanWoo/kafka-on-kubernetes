@@ -25,6 +25,7 @@
   - [kafka streams](#kafka-streams)
   - [best practices](#best-practices)
     - [partition count and replication factor](#partition-count-and-replication-factor)
+    - [topics configuration](#topics-configuration)
     - [Kafka Topic Naming Conventions](#kafka-topic-naming-conventions)
 - [cleanup](#cleanup)
 
@@ -287,6 +288,17 @@ Data processing and transformation library **within** Kafka.
       - 4,000 partitions per broker
   - with Kraft
     - potential for millions of partitions
+
+#### topics configuration
+
+- topics are made of partitions, and partitions are made of segments.
+- log cleanup policies
+  - delete
+    - by time
+    - by size
+  - compact
+    - log compaction
+      - keep the most recent values of each key
 
 #### [Kafka Topic Naming Conventions](https://cnr.sh/essays/how-paint-bike-shed-kafka-topic-naming-conventions)
 
