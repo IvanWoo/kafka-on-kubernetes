@@ -1,3 +1,6 @@
+image:
+  tag: "v0.4.0"
+
 envs:
   config:
     KAFKA_CLUSTERS_0_NAME: my-kafka-cluster

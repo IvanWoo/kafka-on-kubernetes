@@ -7,6 +7,7 @@
   - [cleanup](#cleanup)
 - [java](#java)
   - [prerequisites](#prerequisites)
+  - [set the project SDK](#set-the-project-sdk)
 - [references](#references)
 
 ## networking
@@ -76,12 +77,22 @@ telepresence uninstall --everything
 ### prerequisites
 
 - Intellij IDEA
-- [Amazon Corretto](https://aws.amazon.com/corretto/?filtered-posts.sort-by=item.additionalFields.createdDate&filtered-posts.sort-order=desc)
+- [asdf-vm/asdf](https://github.com/asdf-vm/asdf)
 
 ```sh
 brew install --cask intellij-idea-ce
-brew install --cask corretto
+brew install asdf
+asdf plugin-add java https://github.com/halcyon/asdf-java.git
+asdf install java corretto-18.0.2.9.1
 ```
+
+### set the project SDK
+
+open `kafka-programming/java-kafaka-beginners-cource` in the Intellij IDEA
+
+`cmd + ;` to open the settings
+
+![Intellij IDEA SDK setup](./assets/ide%20sdk%20setup.png "Intellij IDEA SDK setup")
 
 ## references
 
@@ -89,3 +100,4 @@ brew install --cask corretto
 - [Easily Debug Java Microservices Running on Kubernetes with IntelliJ IDEA](https://blog.jetbrains.com/idea/2021/05/easily-debug-java-microservices-running-on-kubernetes-with-intellij-idea/)
 - [Using Telepresence 2 for Kubernetes debugging and local development](https://codefresh.io/blog/telepresence-2-local-development/)
 - [conduktor/kafka-beginners-course](https://github.com/conduktor/kafka-beginners-course)
+- [IntelliJ IDEA - Project configuration SDK](https://www.jetbrains.com/help/idea/sdk.html)
