@@ -70,7 +70,7 @@ kubectl wait kafka/my-kafka-cluster --for=condition=Ready --timeout=300s -n kafk
 #### install [Kafka-UI](https://github.com/provectus/kafka-ui)
 
 ```sh
-helm repo add kafka-ui https://provectus.github.io/kafka-ui
+helm repo add kafka-ui https://provectus.github.io/kafka-ui-charts
 ```
 
 ```sh
